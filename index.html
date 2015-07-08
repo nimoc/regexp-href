@@ -12,11 +12,13 @@ textarea{
 </head>
 <body>
   <p>
-    使用正则捕获 <a> 和 <area> 标签中的 href 属性内容
+    使用正则捕获 <code>&lt;a&gt;</code> 和 <code>&lt;area&gt;</code> 标签中的 href 属性内容
     <br>
     项目地址：<a href="https://github.com/nimojs/regexp-href">https://github.com/nimojs/regexp-href</a>
     <br>
-    正则：<code>/&lt;a.*?\shref=['"]*([^'"\s<>]+)['"]*/i</code>
+    正则：<code>/<(a(rea)?).*?\shref=['"]*([^'"\s<>]+)['"]*/i</code>
+    <br>
+    正则的第一个分组是标签名 <code>a</code>或者<code>area</code>，第三个分组是href属性内容 <code>http://github.com</code>
   </p>
   <textarea name="" autofocus="true" placeholder='Enter the A tags to test: <a href="http://www.github.com">demo</a>' id="teststr" ></textarea>
   <div id="testresult"></div>
@@ -28,14 +30,13 @@ textarea{
   <script>
 var link = function (html) {
     // 获取第一个匹配到的分组
-    var aMatch = html.match(rLink)
-    var output
+    var aMatch = html.match(rLink)    
     if (aMatch) {
-        output = aMatch[1]
-    } else {
-        output = 'not find'
+      return JSON.stringify([aMatch[1],aMatch[3]])
     }
-    return output
+    else {
+      return 'not find'
+    }
 }
 var test = function (html, result) {
     QUnit.test( html, function( assert ) {
@@ -48,22 +49,22 @@ var eTestResult = document.getElementById('testresult')
 eTestStr.onkeyup = function () {
     eTestResult.innerHTML = link(this.value)
 }
-var result = 'http://www.github.com'
-test('<a href="http://www.github.com">', result)
+var result = '["a","http://www.github.com"]'
+test('<strong> \r\n \r\n<br ><a href="http://www.github.com">', result)
 test('<a href=\'http://www.github.com\'>', result)
 test('<a href=http://www.github.com>', result)
 test('<a href="http://www.github.com" href="http://www.nimojs.com">', result)
 test('<a href=\'http://www.github.com\' href=\'http://www.nimojs.com\'>', result)
-test('<A HREF="http://www.github.com">', result)
-test('<a href="//www.github.com">', '//www.github.com')
-test('<a href=\'//www.github.com\'>', '//www.github.com')
-test('<a href=//www.github.com>', '//www.github.com')
-test('<a href=href.github.com>', 'href.github.com')
+test('<A HREF="http://www.github.com">', '["A","http://www.github.com"]')
+test('<a href="//www.github.com">', '["a","//www.github.com"]')
+test('<a href=\'//www.github.com\'>', '["a","//www.github.com"]')
+test('<a href=//www.github.com>', '["a","//www.github.com"]')
+test('<a href=href.github.com>', '["a","href.github.com"]')
 test('<a x-href="http//www.github.com" href="http://www.github.com">', result)
 test('<a x-href=\'http//www.github.com\' href=\'http://www.github.com\'>', result)
 test('<a x-href=http//www.github.com href=\'http://www.github.com\'>', result)
 test('<a title="href=" href="http://www.github.com">', result)
-test('<area shape="rect" coords="375,165,604,210" href="http://www.github.com" target="_blank">', result)
+test('<area shape="rect" coords="375,165,604,210" href="http://www.github.com" target="_blank">', '["area","http://www.github.com"]')
   </script>
 </body>
 </html>
