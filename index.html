@@ -16,9 +16,9 @@ textarea{
     <br>
     项目地址：<a href="https://github.com/nimojs/regexp-href">https://github.com/nimojs/regexp-href</a>
     <br>
-    正则：<code>/<(a(rea)?).*?\shref=['"]*([^'"\s<>]+)['"]*/i</code>
+    正则：<code>/<(a(rea)?)(.*?\s)href=['"]*([^'"\s<>]+)['"]*/i</code>
     <br>
-    正则的第一个分组是标签名 <code>a</code>或者<code>area</code>，第三个分组是href属性内容 <code>http://github.com</code>
+    正则的第1个分组是标签名 <code>a</code>或者<code>area</code>，第3个分组是 ` title="some" ` 第4个分组是href属性内容 <code>http://github.com</code>
   </p>
   <textarea name="" autofocus="true" placeholder='Enter the A tags to test: <a href="http://www.github.com">demo</a>' id="teststr" ></textarea>
   <div id="testresult"></div>
@@ -30,9 +30,9 @@ textarea{
   <script>
 var link = function (html) {
     // 获取第一个匹配到的分组
-    var aMatch = html.match(rLink)    
+    var aMatch = html.match(rLink)
     if (aMatch) {
-      return JSON.stringify([aMatch[1],aMatch[3]])
+      return JSON.stringify([aMatch[1],aMatch[4]])
     }
     else {
       return 'not find'
