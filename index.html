@@ -16,7 +16,7 @@ textarea{
     <br>
     项目地址：<a href="https://github.com/nimojs/regexp-href">https://github.com/nimojs/regexp-href</a>
     <br>
-    正则：<code>/<(a(rea)?)\s*(.*?)\shref=['"]*([^'"\s<>]+)['"]*/i</code>
+    正则： <a href="./regexp.js">./regexp.js</a>
     <br>
     正则的第1个分组是标签名 <code>a</code>或者<code>area</code>，第3个分组是 ` title="some" ` 第4个分组是href属性内容 <code>http://github.com</code>
   </p>
@@ -26,7 +26,7 @@ textarea{
   <div id="qunit-fixture"></div>
   <script src="src/qunit-1.17.1.js"></script>
   <script src="regexp.js"></script>
-  
+
   <script>
 var link = function (html) {
     // 获取第一个匹配到的分组
@@ -83,9 +83,15 @@ test('<a title="href=" href="http://www.github.com">', result)
 // 15
 test('<area shape="rect" coords="375,165,604,210" href="http://www.github.com" target="_blank">', '["area","http://www.github.com"]')
 // 16
-test('<a href="http://{{unsubscribe_domain}}/xxxx">', '["a","http://{{unsubscribe_domain}}/xxxx"]')
+test('<a href="http://{{$unsubscribe_domain}}/xxxx">', '["a","http://{{$unsubscribe_domain}}/xxxx"]')
 // 17
 test('<a title="xxx" href="mailto:xxxx@bbb.com" xxxx>', '["a","mailto:xxxx@bbb.com"]')
+// 18
+test('<a title="xxx" href=" mailto:xxxx@bbb.com" xxxx>', '["a","mailto:xxxx@bbb.com"]')
+// 19
+test('<a title="xxx" href="mailto:xxxx@bbb.com  " xxxx>', '["a","mailto:xxxx@bbb.com"]')
+// 20
+test('<a title="xxx" href=" mailto:xxxx@bbb.com  " xxxx>', '["a","mailto:xxxx@bbb.com"]')
 
   </script>
 </body>
