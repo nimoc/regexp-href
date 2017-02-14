@@ -33,7 +33,7 @@ var link = function (html) {
     var aMatch = html.match(rLink)
     console.log(aMatch)
     if (aMatch) {
-      return JSON.stringify([aMatch[1],aMatch[4]])
+      return [aMatch[1],aMatch[4]]
     }
     else {
       return 'not find'
@@ -41,9 +41,8 @@ var link = function (html) {
 }
 var test = function (html, result) {
     QUnit.test( html, function( assert ) {
-        var output = link(html);
-        console.log(output)
-        assert.ok(output  === result, output)
+        var output = link(html)
+        assert.equal(output.toString(), result.toString())
     })
 }
 var eTestStr = document.getElementById('teststr')
@@ -51,7 +50,7 @@ var eTestResult = document.getElementById('testresult')
 eTestStr.onkeyup = function () {
     eTestResult.innerHTML = link(this.value)
 }
-var result = '["a","http://www.github.com"]'
+var result = ["a","http://www.github.com"]
 // 1
 test('<strong> \r\n \r\n<br ><a href="http://www.github.com">', result)
 // 2
@@ -59,39 +58,43 @@ test('<a href=\'http://www.github.com\'>', result)
 // 3
 test('<a href=http://www.github.com>', result)
 // 4
-test('<a href="http://www.github.com" href="http://www.nimojs.com">', '["a","http://www.nimojs.com"]')
+test('<a href="http://www.github.com" href="http://www.nimojs.com">', ["a","http://www.nimojs.com"])
 // 5
-test('<a href=\'http://www.github.com\' href=\'http://www.nimojs.com\'>', '["a","http://www.nimojs.com"]')
+test('<a href=\'http://www.github.com\' href=\'http://www.nimojs.com\'>', ["a","http://www.nimojs.com"])
 // 6
-test('<A HREF="http://www.github.com">', '["A","http://www.github.com"]')
+test('<A HREF="http://www.github.com">', ["A","http://www.github.com"])
 // 7
-test('<a href="//www.github.com">', '["a","//www.github.com"]')
+test('<a href="//www.github.com">', ["a","//www.github.com"])
 // 8
-test('<a href=\'//www.github.com\'>', '["a","//www.github.com"]')
+test('<a href=\'//www.github.com\'>', ["a","//www.github.com"])
 // 9
 test('<a href=//www.github.com>', '["a","//www.github.com"]')
 // 10
-test('<a href=href.github.com>', '["a","href.github.com"]')
+test('<a href=href.github.com>', ["a","href.github.com"])
 // 11
 test('<a x-href="http//www.github.com" href="http://www.github.com">', result)
 // 12
 test('<a x-href=\'http//www.github.com\' href=\'http://www.github.com\'>', result)
 // 13
-test('<a x-href=http//www.github.com href=\'http://www.baidu.com\'>', '["a","http://www.baidu.com"]')
+test('<a x-href=http//www.github.com href=\'http://www.baidu.com\'>', ["a","http://www.baidu.com"])
 // 14
 test('<a title="href=" href="http://www.github.com">', result)
 // 15
-test('<area shape="rect" coords="375,165,604,210" href="http://www.github.com" target="_blank">', '["area","http://www.github.com"]')
+test('<area shape="rect" coords="375,165,604,210" href="http://www.github.com" target="_blank">', ["area","http://www.github.com"])
 // 16
-test('<a href="http://{{$unsubscribe_domain}}/xxxx">', '["a","http://{{$unsubscribe_domain}}/xxxx"]')
+test('<a href="http://{{$unsubscribe_domain}}/xxxx">', ["a","http://{{$unsubscribe_domain}}/xxxx"])
 // 17
-test('<a title="xxx" href="mailto:xxxx@bbb.com" xxxx>', '["a","mailto:xxxx@bbb.com"]')
+test('<a title="xxx" href="mailto:xxxx@bbb.com" xxxx>', ["a","mailto:xxxx@bbb.com"])
 // 18
-test('<a title="xxx" href=" mailto:xxxx@bbb.com" xxxx>', '["a","mailto:xxxx@bbb.com"]')
+test('<a title="xxx" href=" mailto:xxxx@bbb.com" xxxx>', ["a","mailto:xxxx@bbb.com"])
 // 19
-test('<a title="xxx" href="mailto:xxxx@bbb.com  " xxxx>', '["a","mailto:xxxx@bbb.com"]')
+test('<a title="xxx" href="mailto:xxxx@bbb.com  " xxxx>', ["a","mailto:xxxx@bbb.com"])
 // 20
-test('<a title="xxx" href=" mailto:xxxx@bbb.com  " xxxx>', '["a","mailto:xxxx@bbb.com"]')
+test('<a title="xxx" href=" mailto:xxxx@bbb.com  " xxxx>', ["a","mailto:xxxx@bbb.com"])
+// 21
+test('如果无法阅读此邮件，请 <a href="http://www.wcise.com/EM/201603/mailNet.html" target=_blank><font color=#000>点击</font></a> 这里 &gt;&gt;</td> </tr> <tr> <td><a href="http://www.wcise.com" target=_blank>', ["a","http://www.wcise.com/EM/201603/mailNet.html"])
+// 22
+test('如果无法阅读此邮件，请 <a href=http://www.wcise.com/EM/201603/mailNet.html target=_blank><font color=#000>点击</font></a> 这里 &gt;&gt;</td> </tr> <tr> <td><a href=http://www.wcise.com target=_blank>', ["a","http://www.wcise.com/EM/201603/mailNet.html"])
 
   </script>
 </body>
