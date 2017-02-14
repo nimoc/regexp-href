@@ -58,9 +58,9 @@ test('<a href=\'http://www.github.com\'>', result)
 // 3
 test('<a href=http://www.github.com>', result)
 // 4
-test('<a href="http://www.github.com" href="http://www.nimojs.com">', ["a","http://www.nimojs.com"])
+test('<a href="http://www.github.com" href="http://www.nimojs.com">', ["a","http://www.github.com"])
 // 5
-test('<a href=\'http://www.github.com\' href=\'http://www.nimojs.com\'>', ["a","http://www.nimojs.com"])
+test('<a href=\'http://www.github.com\' href=\'http://www.nimojs.com\'>', ["a","http://www.github.com"])
 // 6
 test('<A HREF="http://www.github.com">', ["A","http://www.github.com"])
 // 7
